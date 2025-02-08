@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ticket Brokerage System</title>
+	<link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" th:href="@{/post-dashboard}">Ticket Brokerage System</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Akilan</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/">Wallet-$<span>100</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/logout">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container mt-1">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				<h2>Add Ticket</h2>
+				<form th:action="@{/ticket-save}" method="post" th:object="${ticketData}">
+					<div class="form-group">
+						<label for="pnrno">PNR No:</label>
+						<input type="text" class="form-control" th:field="*{pnrNo}" maxlength="10" required>
+					</div>
+					<div class="form-group">
+						<label for="trainName">Train Name:</label>
+						<select class="form-select" id="trainId" th:field="*{trainId}" required>
+							<option value="">Choose...</option>
+							<option th:each="t : ${trainList}" th:value="${t.trainId}"
+								th:text="${t.trainName +' ('+t.trainCode+')'}" />
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="fromLocation">Location Start:</label>
+						<select class="form-select" id="startLocation" th:field="*{startLocation}" required>
+							<option value="">Choose...</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="toLocation">Location End:</label>
+						<select class="form-select" id="endLocation" th:field="*{endLocation}" required>
+							<option value="">Choose...</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="noOfPassengers">No Of Passengers:</label>
+						<input type="number" class="form-control" id="noOfPassengers" th:field="*{noOfPassengers}"
+							min="0" max="5" required>
+					</div>
+					<div class="form-group">
+						<label for="ticketCost">Cost(&#8377;):</label>
+						<input type="number" class="form-control" id="ticketCost" th:field="*{ticketCost}" readonly required>
+					</div>
+					<br>
+					<button type="submit" id="btn-add-ticket" class="btn btn-success btn-block">Add Ticket</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/jquery-3.7.1.min.js}"></script>
+	<script>
+		$(document).ready(function () {
+			$('#noOfPassengers').val(0);
+			$('#ticketCost').val(0);
+
+			$('#trainId').change(function () {
+				var tainId = $(this).val();
+				if (tainId) {
+					$.get("/api/location-search?trainId=" + tainId, function (data) {
+						var startLocationDropdown = $('#startLocation');
+						var endLocationDropdown = $('#endLocation');
+
+						startLocationDropdown.empty();
+						endLocationDropdown.empty();
+
+						startLocationDropdown.append($('<option>', {
+							value: '',
+							text: 'Choose'
+						}));
+
+						endLocationDropdown.append($('<option>', {
+							value: '',
+							text: 'Choose'
+						}));
+
+						$.each(data, function (_, location) {
+							startLocationDropdown.append($('<option></option>').attr('value', location.locationId).text(location.locationName + " (" + location.locationCode + ")"));
+						});
+
+						$.each(data, function (_, location) {
+							endLocationDropdown.append($('<option></option>').attr('value', location.locationId).text(location.locationName + " (" + location.locationCode + ")"));
+						});
+
+						$('#noOfPassengers').val(0);
+						$('#ticketCost').val(0);
+					});
+				}
+			});
+
+			$('#noOfPassengers').change(function () {
+				var tainId = $('#trainId').val();
+				var locationId = $('#endLocation').val();
+				var noOfPassengers = $('#noOfPassengers').val();
+
+				var startLocationDropdown = $('#startLocation');
+				var endLocationDropdown = $('#endLocation');
+				if (startLocationDropdown.val() && endLocationDropdown.val() && startLocationDropdown.val() == endLocationDropdown.val()) {
+					alert("The start and end locations should not be the same. Please choose different locations.")
+					startLocationDropdown.val('')
+					endLocationDropdown.val('');
+					$('#noOfPassengers').val(0);
+					$('#ticketCost').val(0);
+					return false;
+				}
+
+				if (tainId && locationId) {
+					$.get("/api/tain-location-amount?trainId=" + tainId + "&locationId=" + locationId, function (data) {
+						$('#ticketCost').val(data * noOfPassengers);
+					});
+				}
+			});
+
+			$("#btn-add-ticket").click(function () {
+				if ($('#noOfPassengers').val() == "0") {
+					alert("Please enter no of passangers.");
+					event.preventDefault();
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>

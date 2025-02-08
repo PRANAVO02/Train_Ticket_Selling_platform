@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ticket Brokerage System</title>
+	<link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				<h2 class="text-center">Registration</h2>
+				<div th:if="${errorMsg}" class="alert alert-danger" th:text="${errorMsg}"></div>
+				<form th:action="@{/register}" method="post" th:object="${registration}">
+					<div class="form-group">
+						<label for="name">Name:</label>
+						<input type="text" class="form-control" th:field="*{userName}" maxlength="200" required>
+					</div>
+					<div class="form-group">
+						<label for="mobile">Mobile Number:</label>
+						<input type="text" class="form-control" th:field="*{userMobile}" pattern="[0-9]*" maxlength="10"
+							required>
+					</div>
+					<div class="form-group">
+						<label for="mobile">Password:</label>
+						<input type="password" class="form-control" th:field="*{password}" maxlength="15"
+							required>
+					</div>
+					<div class="form-group">
+						<label for="mobile">Confirm Password:</label>
+						<input type="password" class="form-control" th:field="*{confirmPassword}" maxlength="15"
+							required>
+					</div>
+					<div class="form-group">
+						<label for="email">Email:</label>
+						<input type="email" class="form-control" th:field="*{userEmail}" required>
+					</div>
+					<br>
+					<button type="submit" class="btn btn-success btn-block">Register</button>
+				</form>
+				<p class="text-center mt-3">
+					<a th:href="@{/}" class="btn btn-link">Registered User? Login here</a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

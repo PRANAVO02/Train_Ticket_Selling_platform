@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ticket Brokerage System</title>
+	<link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" th:href="@{/buyer-dashboard}">Ticket Brokerage System</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#"><span th:text="${login.userName}"></span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/logout}">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="row mt-2">
+			<div class="col-md-12">
+				<h4>List of Open Tickets</h4>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>PNR No</th>
+							<th>Train Name</th>
+							<th>Location Start</th>
+							<th>Location End</th>
+							<th>No Of Passengers</th>
+							<th>Cost</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="ticket,iter : ${tickets}">
+							<td align="center"><span th:text="${iter.index+1}"></span></td>
+							<td><span th:text="${ticket.pnrNo}"></span></td>
+							<td><span th:text="${ticket.train.trainName +' ('+ticket.train.trainCode+')'}"></span></td>
+							<td><span th:text="${ticket.startLocation.locationName +' ('+ticket.startLocation.locationCode+')'}"></span></td>
+							<td><span th:text="${ticket.endLocation.locationName +' ('+ticket.endLocation.locationCode+')'}"></span></td>
+							<td><span th:text="${ticket.noOfPassengers}"></span></td>
+							<td>&#8377;<span th:text="${ticket.ticketCost}"></span></td>
+							<td> <a th:href="@{'/book-ticket?ticketId='+${ticket.ticketId}}"
+									class="btn btn-primary mb-3">Book</a></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

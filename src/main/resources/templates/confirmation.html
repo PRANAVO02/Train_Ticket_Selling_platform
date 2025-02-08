@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ticket Brokerage System</title>
+	<link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" th:href="@{/buyer-dashboard}">Ticket Brokerage System</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#"><span th:text="${login.userName}"></span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/logout}">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				<h2>Confirmation</h2>
+				<p>Your ticket has been purchased successfully. Here are the details:</p>
+				<ul>
+					<li>PNR No: <span th:text="${ticket.pnrNo}"></span></li>
+					<li>Train Name: <span th:text="${ticket.train.trainName +' ('+ticket.train.trainCode+')'}"></span></li>
+					<li>Location Start: <span th:text="${ticket.startLocation.locationName +' ('+ticket.startLocation.locationCode+')'}"></span></li>
+					<li>Location End: <span th:text="${ticket.endLocation.locationName +' ('+ticket.endLocation.locationCode+')'}"></span></li>
+					<li>No Of Passengers: <span th:text="${ticket.noOfPassengers}"></span></li>
+					<li>Cost: <span th:text="${ticket.ticketCost}"></span></li>
+				</ul>
+				<a th:href="@{/buyer-dashboard}" class="btn btn-primary">Home</a>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+</body>
+
+</html>
+</body>
+
+</html>

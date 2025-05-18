@@ -48,26 +48,12 @@ Run TicketBrokerageApplication.java (main class)
 http://localhost:8080
 
 📁 Project Structure
+
 ![📁 Project StructurePro](project_directory.png)
 
-src/
-└── main/
-    ├── java/com/ticket/brokerage/
-    │   ├── controller/             # Handles web requests
-    │   ├── model/                  # Data models / entities
-    │   ├── repository/             # JPA Repositories
-    │   ├── service/                # Service interfaces and implementations
-    │   ├── TicketBrokerageApplication.java
-    │   └── ServletInitializer.java
-    ├── resources/
-    │   ├── static/                 # CSS, JS, images (if any)
-    │   ├── templates/              # Thymeleaf HTML templates
-    │   ├── application.properties  # DB and config settings
-    └── test/
-        └── java/com/ticket/brokerage/
-            └── TicketBrokerageApplicationTests.java
-   
+
 Key HTML Pages:
+
 home.html – Landing page
 
 login.html, registration.html – Authentication

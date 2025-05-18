@@ -48,7 +48,7 @@ Run TicketBrokerageApplication.java (main class)
 http://localhost:8080
 
 📁 Project Structure
-![Dashboard Screenshot](images/dashboard.png)
+![📁 Project StructurePro](project_directory.png)
 
 src/
 └── main/

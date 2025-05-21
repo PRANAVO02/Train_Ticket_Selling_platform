@@ -27,9 +27,7 @@ Build Tool	Maven
 
 🚀 How to Run the Project
 1. Clone the Repository
-bash
-Copy
-Edit
+
 git clone https://github.com/PRANAVO02/ticket_Selling_platform.git
 cd train-ticket-platform
 
